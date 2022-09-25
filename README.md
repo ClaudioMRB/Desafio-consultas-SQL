@@ -55,15 +55,16 @@ CREATE TABLE tb_aluno(
 );
 
 'Inserindo dados na tabela aluno'
-INSERT INTO tb_aluno( cpf, nome, nascimento) VALUES('736376983-19', 'Carlos Silva', '1990-07-21')
-INSERT INTO tb_aluno( cpf, nome, nascimento) VALUES('353847901-22', 'Maria Clara', '1991-09-03')
-INSERT INTO tb_aluno( cpf, nome, nascimento) VALUES('444123123-44', 'Ana Portes', '1995-05-21')
-INSERT INTO tb_aluno( cpf, nome, nascimento) VALUES('555098098-55', 'Pedro Tiago', '2001-10-15')
+INSERT INTO tb_aluno( cpf, nome, nascimento) VALUES('736376983-19', 'Carlos Silva', '1990-07-21');
+INSERT INTO tb_aluno( cpf, nome, nascimento) VALUES('353847901-22', 'Maria Clara', '1991-09-03');
+INSERT INTO tb_aluno( cpf, nome, nascimento) VALUES('444123123-44', 'Ana Portes', '1995-05-21');
+INSERT INTO tb_aluno( cpf, nome, nascimento) VALUES('555098098-55', 'Pedro Tiago', '2001-10-15');
 
 'Exibir a tabela aluno por ordem crescente de idade'
 SELECT * FROM public.tb_aluno
 ORDER BY nascimento ASC
 
+DELETE FROM tb_resultado WHERE aluno_id = '444123123-44 '
 
 'Criando tabela de matricula'
 CREATE TABLE tb_matricula(
@@ -134,15 +135,16 @@ INSERT INTO tb_resultado(aluno_id, avaliacao_id, nota_obtida) VALUES( '353847901
 INSERT INTO tb_resultado(aluno_id, avaliacao_id, nota_obtida) VALUES( '736376983-19', 2, '47.0');
 INSERT INTO tb_resultado(aluno_id, avaliacao_id, nota_obtida) VALUES( '353847901-22', 2, '52.4');
 INSERT INTO tb_resultado(aluno_id, avaliacao_id, nota_obtida) VALUES( '736376983-19', 3, '30.0');
-INSERT INTO tb_resultado(aluno_id, avaliacao_id, nota_obtida) VALUES( '444123123-44', 3, '50.0');@
+INSERT INTO tb_resultado(aluno_id, avaliacao_id, nota_obtida) VALUES( '444123123-44', 3, '50.0');
 INSERT INTO tb_resultado(aluno_id, avaliacao_id, nota_obtida) VALUES( '555098098-55', 3, '40.0');
 INSERT INTO tb_resultado(aluno_id, avaliacao_id, nota_obtida) VALUES( '736376983-19', 4, '35.0');
-INSERT INTO tb_resultado(aluno_id, avaliacao_id, nota_obtida) VALUES( '444123123-44', 4, '45.0');@
+INSERT INTO tb_resultado(aluno_id, avaliacao_id, nota_obtida) VALUES( '444123123-44', 4, '45.0');
 INSERT INTO tb_resultado(aluno_id, avaliacao_id, nota_obtida) VALUES( '555098098-55', 4, '35.5');
 
 
 'Exibir a tabela com os resultados'
-SELECT * FROM public.tb_resultado
+SELECT aluno_id FROM public.tb_aluno WHERE aluno_id = '444123123-44'
+
 
 
 'Comandos para deletar uma tabela especifica'
@@ -152,8 +154,3 @@ DROP TABLE tb_aluno;
 DROP TABLE tb_matricula;
 DROP TABLE tb_turma;
 DROP TABLE tb_resultado;
-
-
-
-
-
