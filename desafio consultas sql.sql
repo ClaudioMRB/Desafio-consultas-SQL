@@ -34,6 +34,12 @@ ALTER TABLE tb_turma ADD FOREIGN key(curso) REFERENCES tb_curso(id);
 INSERT INTO tb_turma(numero, inicio, vagas, curso) VALUES(1, '2017-09-10', 30, 1)
 INSERT INTO tb_turma(numero, inicio, vagas, curso) VALUES(2, '2022-05-20', 30, 1)
 
+'Saida data formato dd/mm/aaaa'
+	SELECT numero,
+	CASE WHEN EXTRACT( DAY FROM inicio) >=10 THEN CONCAT(EXTRACT( DAY FROM inicio), '/', EXTRACT( MONTH FROM inicio), '/', EXTRACT( YEAR FROM inicio)) 
+	ELSE CONCAT('0', EXTRACT( DAY FROM inicio), '/', EXTRACT( MONTH FROM inicio), '/', EXTRACT( YEAR FROM inicio)) 
+	END AS inicio 
+	FROM tb_turma
 
 'Exibir a tabela turma'
 SELECT * FROM public.tb_turma
@@ -47,6 +53,13 @@ CREATE TABLE tb_aluno(
     PRIMARY KEY (cpf)
 );
 
+'Extrai o dia da data inserida no formato dd/mm/aa'
+SELECT cpf, nome, nascimento, CONCAT(EXTRACT( DAY FROM nascimento), '/', EXTRACT( MONTH FROM nascimento), '/', EXTRACT( YEAR FROM nascimento)) AS data FROM tb_aluno
+'Extrai o ano menor que a data inserida no WHERE'
+SELECT cpf, nome, nascimento, EXTRACT( YEAR FROM nascimento) AS dia FROM tb_aluno where EXTRACT ( YEAR FROM nascimento) < 2001
+'Extrai o dia da data inserida, porém convertendo o tipo da saida com o CAST, renomeando a coluna com o AS'
+SELECT cpf, nome, nascimento, CAST(EXTRACT( DAY FROM nascimento) AS REAL) AS dia FROM tb_aluno
+
 'Inserindo dados na tabela aluno'
 INSERT INTO tb_aluno( cpf, nome, nascimento) VALUES('736376983-19', 'Carlos Silva', '1990-07-21');
 INSERT INTO tb_aluno( cpf, nome, nascimento) VALUES('353847901-22', 'Maria Clara', '1991-09-03');
@@ -57,7 +70,6 @@ INSERT INTO tb_aluno( cpf, nome, nascimento) VALUES('555098098-55', 'Pedro Tiago
 SELECT * FROM public.tb_aluno
 ORDER BY nascimento ASC
 
-DELETE FROM tb_resultado WHERE aluno_id = '444123123-44 '
 
 'Criando tabela de matricula'
 CREATE TABLE tb_matricula(
@@ -102,6 +114,7 @@ INSERT INTO tb_avaliacao(nota, "data", turma_id) VALUES( '60.0', '2017-11-30', 1
 INSERT INTO tb_avaliacao(nota, "data", turma_id) VALUES( '50.0', '2022-06-20', 2)
 INSERT INTO tb_avaliacao(nota, "data", turma_id) VALUES( '50.0', '2022-07-20', 2)
 
+SELECT * CAST ( EXTRACT (DAY FROM date) AS int) AS novo_nome_da_coluna FROM tb_sale; FROM tb_avaliacao
 
 'Exibir tabale de avaliação'
 SELECT * FROM public.tb_avaliacao
@@ -136,7 +149,7 @@ INSERT INTO tb_resultado(aluno_id, avaliacao_id, nota_obtida) VALUES( '555098098
 
 
 'Exibir a tabela com os resultados'
-SELECT aluno_id FROM public.tb_aluno WHERE aluno_id = '444123123-44'
+SELECT tb_resultado FROM luno_id 
 
 
 
@@ -147,3 +160,28 @@ DROP TABLE tb_aluno;
 DROP TABLE tb_matricula;
 DROP TABLE tb_turma;
 DROP TABLE tb_resultado;
+
+'QUESTÃO 1'
+
+SELECT * FROM (
+	SELECT nome AS curso, numero AS turma, CASE WHEN EXTRACT( DAY FROM inicio) >=10 THEN CONCAT(EXTRACT( DAY FROM inicio), '/', EXTRACT( MONTH FROM inicio), '/', EXTRACT( YEAR FROM inicio)) 
+	ELSE CONCAT('0', EXTRACT( DAY FROM inicio), '/', EXTRACT( MONTH FROM inicio), '/', EXTRACT( YEAR FROM inicio)) 
+	END AS inicio FROM tb_curso INNER JOIN tb_turma ON tb_turma.curso = tb_curso.id
+	
+) AS juncao
+
+'QUESTÃO 2'
+SELECT * FROM(
+	
+	SELECT numero FROM tb_turma
+	
+	SELECT nome FROM tb_curso
+
+	SELECT nome, cpf FROM tb_aluno
+
+) AS juncao
+
+
+
+
+
