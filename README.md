@@ -123,10 +123,13 @@ INNER JOIN tb_curso c ON m.turma_id = t.id
 **QUESTÃO 3: listagem de data e nota de todas avaliações já ocorridas, juntamente com nome, nota obtida por cada aluno em cada avaliação, e também qual a porcentagem de nota obtida em relação à nota da avaliação. Os resultados devem estar ordenados da avaliação mais recente para a mais antiga, e, para cada avaliação, os nomes dos alunos devem estar ordenados em ordem crescente. A porcentagem deve ter duas casas decimais.**
 
 SELECT
-av."data",
+CASE WHEN EXTRACT( DAY FROM data ) >=10 THEN CONCAT(EXTRACT( DAY FROM data), '/', EXTRACT( MONTH FROM data), '/', EXTRACT( YEAR FROM data)) 
+	ELSE CONCAT('0', EXTRACT( DAY FROM data), '/', EXTRACT( MONTH FROM data), '/', EXTRACT( YEAR FROM data)) 
+	END AS data,
 av.nota,
 a.nome,
-r.nota_obtida
+r.nota_obtida,
+ROUND (CAST (r.nota_obtida/av.nota * 100 AS numeric), 2) AS porcentagem
 FROM tb_resultado r
 INNER JOIN tb_aluno a ON r.aluno_id = a.cpf
 INNER JOIN tb_avaliacao av ON av.id = r.avaliacao_id
@@ -135,3 +138,12 @@ ORDER BY av."data" DESC, a.nome ASC
 
 
 **QUESTÃO 4: nome e nota total dos alunos da turma 10 (ATENÇÃO: você deve restringir a turma pelo número 10 dela, e não pelo id 2).**
+
+SELECT
+a.nome,
+ROUND(CAST(SUM(r.nota_obtida) AS numeric), 2) AS total
+FROM tb_resultado r
+INNER JOIN tb_aluno a ON r.aluno_id = a.cpf
+INNER JOIN tb_avaliacao av ON av.id = r.avaliacao_id
+INNER JOIN tb_turma tm ON tm.id = av.turma_id
+WHERE tm.numero = '10' GROUP BY a.nome 
